@@ -1,5 +1,7 @@
 package Table;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
+
 import java.util.ArrayList;
 
 /**
@@ -10,8 +12,50 @@ import java.util.ArrayList;
  * Void return on `remove`.
  */
 public class Table<K, V> {
-    private ArrayList entries;
+    private ArrayList<Entry> entries;
 
     public Table() {
+        entries = new ArrayList();
+    }
+
+    public V get(K k) {
+        V retVal = null;
+        for (int i = 0; i < entries.size(); i++) {
+            Entry entry = entries.get(i);
+            if (entry.getKey().equals(k)) {
+                retVal = (V) entry.getValue();
+            }
+        }
+        return retVal;
+    }
+
+    public void put(K k, V v) {
+        if (keyExists(k)) {
+            remove(k);
+        }
+        entries.add(new Entry<>(k, v));
+
+    }
+
+    public Boolean keyExists(K k) {
+        Boolean retVal = false;
+        for (int i = 0; i < entries.size(); i++) {
+            Entry entry = entries.get(i);
+            if (entry.getKey().equals(k)) {
+                retVal = true;
+            }
+        }
+
+        return retVal;
+    }
+
+    public void remove(K k) {
+        for (int i = 0; i < entries.size(); i++) {
+            Entry entry = entries.get(i);
+            if (entry.getKey().equals(k)) {
+                entries.remove(i);
+            }
+        }
+
     }
 }
